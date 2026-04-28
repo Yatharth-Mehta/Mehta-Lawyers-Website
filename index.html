@@ -391,6 +391,14 @@ input[type="url"], input[type="search"], textarea {
 /* A small decorative mark next to Est. 1998 in the nav */
 .nav-brand-sub::before{ content:"◆  "; color:var(--crimson); letter-spacing:.1em }
 
+
+/* Partner contact block (Saurabh & Mithil only) */
+.partner-contact{margin-top:28px;padding:20px 0 4px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
+.partner-contact-row{display:flex;align-items:baseline;gap:18px}
+.partner-contact-label{font-family:var(--sans);font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--brass-dark);font-weight:600;min-width:70px}
+.partner-contact-value{font-family:var(--serif);font-size:18px;color:var(--ink);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .25s,color .25s}
+.partner-contact-value:hover{color:var(--brass);border-bottom-color:var(--brass)}
+@media (max-width:760px){.partner-contact-row{flex-direction:column;gap:2px}.partner-contact-value{font-size:16px}}
 </style>
 </head>
 <body>
@@ -681,6 +689,16 @@ input[type="url"], input[type="search"], textarea {
             <p>Advocate Saurabh J. Mehta founded Mehta Lawyers in 1998 and has since built a distinguished practice before the Hon'ble Gujarat High Court and various subordinate courts. With over 27 years of dedicated courtroom experience, he is recognised across the bar for his precision in drafting, strategic clarity, and effective advocacy.</p>
             <p>His practice spans constitutional law, civil litigation, service and labour matters, and land and revenue disputes. He has appeared before the Supreme Court of India, the High Court of Gujarat, District &amp; Sessions Courts, and specialised tribunals including the NCLT, DRT, SAT and consumer commissions.</p>
             <p>Beyond regular litigation, Saurabh actively engages in policy-oriented representations and public interest litigation, contributing to institutional reforms and safeguarding citizens' rights.</p>
+            <div class="partner-contact">
+              <div class="partner-contact-row">
+                <span class="partner-contact-label">Email</span>
+                <a href="mailto:info@mehtalawyers.com" class="partner-contact-value">info@mehtalawyers.com</a>
+              </div>
+              <div class="partner-contact-row">
+                <span class="partner-contact-label">Mobile</span>
+                <a href="tel:+919824050702" class="partner-contact-value">+91 98240 50702</a>
+              </div>
+            </div>
             <div class="expertise">
               <h4>Areas of Expertise</h4>
               <ul>
@@ -702,6 +720,16 @@ input[type="url"], input[type="search"], textarea {
             <p>Advocate Mithil J. Mehta is a key member of the firm's litigation team, with a growing practice across civil, criminal and commercial matters. He brings a contemporary approach to traditional advocacy — combining rigorous legal research with technology-driven case management.</p>
             <p>His practice involves regular appearances before the High Court of Gujarat, District &amp; Sessions Courts, and various tribunals. He focuses particularly on civil disputes, criminal defence, and commercial litigation, and contributes significantly to the firm's drafting and research work.</p>
             <p>Mithil works closely with the firm's diverse clientele — from individual clients and start-ups to established corporates and institutions — ensuring each matter receives meticulous attention and a strategic, results-oriented approach.</p>
+            <div class="partner-contact">
+              <div class="partner-contact-row">
+                <span class="partner-contact-label">Email</span>
+                <a href="mailto:info@mehtalawyers.com" class="partner-contact-value">info@mehtalawyers.com</a>
+              </div>
+              <div class="partner-contact-row">
+                <span class="partner-contact-label">Mobile</span>
+                <a href="tel:+919924673973" class="partner-contact-value">+91 99246 73973</a>
+              </div>
+            </div>
             <div class="expertise">
               <h4>Areas of Expertise</h4>
               <ul>
@@ -855,18 +883,18 @@ input[type="url"], input[type="search"], textarea {
         </div>
         <div class="contact-form">
           <div class="form-head">Protect Your Rights Today!</div>
-          <div class="form-subhead">Share a few details and we will respond promptly.</div>
+          <div class="form-subhead">Share a few details and we will respond promptly. Your message will be sent to <strong>info@mehtalawyers.com</strong>.</div>
           <div class="form-row">
-            <div class="form-group"><label>First Name</label><input type="text"></div>
-            <div class="form-group"><label>Last Name</label><input type="text"></div>
+            <div class="form-group"><label>First Name</label><input type="text" id="cf-first" required></div>
+            <div class="form-group"><label>Last Name</label><input type="text" id="cf-last" required></div>
           </div>
           <div class="form-row">
-            <div class="form-group"><label>Email</label><input type="email"></div>
-            <div class="form-group"><label>Phone</label><input type="tel"></div>
+            <div class="form-group"><label>Email</label><input type="email" id="cf-email" required></div>
+            <div class="form-group"><label>Phone</label><input type="tel" id="cf-phone"></div>
           </div>
-          <div class="form-group"><label>Referred By</label><input type="text"></div>
-          <div class="form-group"><label>Message</label><textarea rows="4"></textarea></div>
-          <button type="button" class="form-submit" onclick="alert('Thank you — please connect this form to your preferred email or backend service.')">Submit Enquiry →</button>
+          <div class="form-group"><label>Referred By</label><input type="text" id="cf-ref"></div>
+          <div class="form-group"><label>Message</label><textarea rows="4" id="cf-msg" required></textarea></div>
+          <button type="button" class="form-submit" onclick="submitEnquiry()">Submit Enquiry →</button>
         </div>
       </div>
     </div>
@@ -986,6 +1014,31 @@ window.addEventListener('scroll', () => {
     if (modes[i]) document.documentElement.classList.add(modes[i]);
   }, 5000);
 })();
+
+// Contact form — opens user's email client with prefilled enquiry to info@mehtalawyers.com
+function submitEnquiry(){
+  var first = (document.getElementById('cf-first').value || '').trim();
+  var last  = (document.getElementById('cf-last').value || '').trim();
+  var email = (document.getElementById('cf-email').value || '').trim();
+  var phone = (document.getElementById('cf-phone').value || '').trim();
+  var ref   = (document.getElementById('cf-ref').value || '').trim();
+  var msg   = (document.getElementById('cf-msg').value || '').trim();
+  if(!first || !last || !email || !msg){
+    alert('Please fill in your name, email, and message before submitting.');
+    return;
+  }
+  var subject = 'New Enquiry from ' + first + ' ' + last + ' — Mehta Lawyers Website';
+  var body =
+    'Name: ' + first + ' ' + last + '\n' +
+    'Email: ' + email + '\n' +
+    'Phone: ' + (phone || '—') + '\n' +
+    'Referred By: ' + (ref || '—') + '\n\n' +
+    'Message:\n' + msg + '\n\n' +
+    '— Sent via mehtalawyers.com contact form';
+  var mailto = 'mailto:info@mehtalawyers.com?subject=' + encodeURIComponent(subject) +
+               '&body=' + encodeURIComponent(body);
+  window.location.href = mailto;
+}
 
 // Mobile menu
 document.getElementById('menuToggle').addEventListener('click', () => {
